@@ -16,37 +16,33 @@ public class ArrayStorage {
     }
 
     void save(Resume r) {
-        if (Arrays.stream(storage).filter(Objects::nonNull).noneMatch(resume -> resume.uuid.equals(r.uuid))) {
+        if (r.uuid != null && Arrays.stream(storage).filter(Objects::nonNull).noneMatch(resume -> resume.uuid.equals(r.uuid))) {
             storage[counter++] = r;
         }
     }
 
     Resume get(String uuid) {
-        for (Resume resume : storage) {
-            if (resume != null && resume.uuid.equals(uuid)) {
-                return resume;
+        for (int i = 0; i < counter; i++) {
+            if (storage[i].uuid.equals(uuid)) {
+                return storage[i];
             }
         }
         return null;
     }
 
     void delete(String uuid) {
-
-        int indexDelObj = 0;
-
-        for (Resume r : storage) {
-            if (!(r.uuid.equals(uuid))) {
-                indexDelObj++;
+        int index = 0;
+        for (int i = 0; i < counter; i++) {
+            if (!(storage[i].uuid.equals(uuid))) {
+                index++;
             } else {
-                for (int i = indexDelObj; i < counter; i++) {
-                    storage[i] = storage[i + 1];
+                for (int j = index; j < counter - 1; j++) {
+                    storage[j] = storage[j + 1];
                 }
-
+                storage[--counter] = null;
                 return;
             }
-
         }
-        storage[--counter] = null;
     }
 
     Resume[] getAll() {
