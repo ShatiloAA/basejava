@@ -4,8 +4,6 @@ import ru.javawebinar.basejava.model.Resume;
 
 import java.util.Arrays;
 
-import static java.lang.System.out;
-
 public class SortedArrayStorage extends AbstractArrayStorage {
 
     @Override
@@ -16,18 +14,15 @@ public class SortedArrayStorage extends AbstractArrayStorage {
     }
 
     @Override
-    protected void addResume(Resume r) {
-        int index = -(getIndex(r.getUuid())) - 1;
-        System.arraycopy(storage, index, storage, index + 1, size - index);
-        storage[index] = r;
-        size++;
+    protected void addResume(Resume resume, int index) {
+        int insertIndex = -(index) - 1;
+        System.arraycopy(storage, insertIndex, storage, insertIndex + 1, size - insertIndex);
+        storage[insertIndex] = resume;
     }
 
     @Override
-    protected void delResume(String uuid) {
-        int index = getIndex(uuid);
+    protected void delResume(String uuid, int index) {
         int length = size - (index == 0 ? 1 : index);
         System.arraycopy(storage, index + 1, storage, index, length);
-        storage[--size] = null;
-        }
+    }
 }
