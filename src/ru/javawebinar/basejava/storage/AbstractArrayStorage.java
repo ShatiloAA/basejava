@@ -1,5 +1,8 @@
 package ru.javawebinar.basejava.storage;
 
+import ru.javawebinar.basejava.exception.ExistStorageException;
+import ru.javawebinar.basejava.exception.NotExistStorageException;
+import ru.javawebinar.basejava.exception.StorageException;
 import ru.javawebinar.basejava.model.Resume;
 
 import java.util.Arrays;
@@ -18,9 +21,9 @@ public abstract class AbstractArrayStorage implements Storage {
     public void save(Resume resume) {
         int index = getIndex(resume.getUuid());
         if (index >= 0) {
-            System.out.println("Resume " + resume.getUuid() + " уже есть в базе");
+            throw new ExistStorageException(resume.getUuid());
         } else if (size == STORAGE_LIMIT) {
-            System.out.println("Resume " + resume.getUuid() + " не может быть добавлено, база переполнена!");
+            throw new StorageException("Resume " + resume.getUuid() + " не может быть добавлено, база переполнена!", resume.getUuid());
         } else {
             addResume(resume, index);
             size++;
@@ -30,7 +33,7 @@ public abstract class AbstractArrayStorage implements Storage {
     public void update(Resume resume) {
         int index = getIndex(resume.getUuid());
         if (index < 0) {
-            System.out.println("Resume " + resume.getUuid() + " нет в базе");
+            throw new NotExistStorageException(resume.getUuid());
         } else {
             storage[index] = resume;
         }
@@ -42,7 +45,7 @@ public abstract class AbstractArrayStorage implements Storage {
             delResume(uuid, index);
             storage[--size] = null;
         } else {
-            System.out.println("Resume " + uuid + " нет в базе");
+            throw new NotExistStorageException(uuid);
         }
     }
 
@@ -52,11 +55,10 @@ public abstract class AbstractArrayStorage implements Storage {
 
     public Resume get(String uuid) {
         int index = getIndex(uuid);
-        if (index >= 0) {
-            return storage[index];
+        if (index < 0) {
+            throw new NotExistStorageException(uuid);
         }
-        System.out.println("Resume " + uuid + " нет в базе");
-        return null;
+        return storage[index];
     }
 
     public Resume[] getAll() {
