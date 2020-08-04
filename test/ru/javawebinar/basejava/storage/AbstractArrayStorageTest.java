@@ -7,7 +7,6 @@ import ru.javawebinar.basejava.exception.ExistStorageException;
 import ru.javawebinar.basejava.exception.NotExistStorageException;
 import ru.javawebinar.basejava.exception.StorageException;
 import ru.javawebinar.basejava.model.Resume;
-import java.lang.reflect.Field;
 
 public abstract class AbstractArrayStorageTest {
 
@@ -16,6 +15,7 @@ public abstract class AbstractArrayStorageTest {
     private static final String UUID_1 = "uuid1";
     private static final String UUID_2 = "uuid2";
     private static final String UUID_3 = "uuid3";
+    private static Resume[] testResumes;
 
 
     public AbstractArrayStorageTest(Storage storage) {
@@ -23,43 +23,23 @@ public abstract class AbstractArrayStorageTest {
     }
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         storage.clear();
-        storage.save(new Resume(UUID_1));
-        storage.save(new Resume(UUID_2));
-        storage.save(new Resume(UUID_3));
+        testResumes = new Resume[]{new Resume(UUID_1), new Resume(UUID_2), new Resume(UUID_3)};
+        for (Resume resume : testResumes) {
+            storage.save(resume);
+        }
     }
 
     @Test
-    public void size() throws Exception {
+    public void successfulSize() throws Exception {
         Assert.assertEquals(3, storage.size());
-    }
-
-    @Test(expected = NullPointerException.class)
-    public void falseSize() throws Exception {
-        Class clazz = Class.forName(storage.getClass().getTypeName());
-        Field fieldSize = clazz.getSuperclass().getDeclaredField("size");
-        fieldSize.setAccessible(true);
-        fieldSize.set(storage, 4);
-        storage.save(new Resume("uuid4"));
     }
 
     @Test
     public void clear() throws Exception {
         storage.clear();
         Assert.assertEquals(0, storage.size());
-    }
-
-    @Test(expected = ExistStorageException.class)
-    public void incompleteCleaning() throws Exception {
-        Class clazz = Class.forName(storage.getClass().getTypeName());
-        Field fieldSize = clazz.getSuperclass().getDeclaredField("size");
-        fieldSize.setAccessible(true);
-        fieldSize.set(storage, 0);
-        storage.clear();
-        fieldSize.set(storage, 3);
-        storage.save(new Resume(UUID_1));
-        System.out.println(storage.size());
     }
 
     @Test
@@ -79,9 +59,7 @@ public abstract class AbstractArrayStorageTest {
     public void getAll() throws Exception {
         Resume[] resumes = storage.getAll();
         Assert.assertEquals(resumes.length, storage.size());
-        for (Resume resume : resumes) {
-            Assert.assertSame(resume, storage.get(resume.getUuid()));
-        }
+        Assert.assertArrayEquals(testResumes, resumes);
     }
 
     @Test(expected = NullPointerException.class)
@@ -99,7 +77,7 @@ public abstract class AbstractArrayStorageTest {
     }
 
     @Test(expected = ExistStorageException.class)
-    public void getExist() throws Exception {
+    public void saveExist() throws Exception {
         storage.save(new Resume(UUID_3));
     }
 
