@@ -26,4 +26,5 @@ public class ArrayStorage extends AbstractArrayStorage {
     protected void delResume(String uuid, int index) {
         storage[index] = storage[size - 1];
     }
+
 }
