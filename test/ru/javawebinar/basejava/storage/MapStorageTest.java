@@ -16,8 +16,6 @@ public class MapStorageTest extends AbstractStorageTest {
         Resume[] resumes = storage.getAll();
         Arrays.sort(resumes);
         Resume[] testResumes = new Resume[]{new Resume("uuid1"), new Resume("uuid2"), new Resume("uuid3")};
-        Assert.assertEquals(resumes.length, storage.size());
         Assert.assertArrayEquals(testResumes, resumes);
     }
-
 }

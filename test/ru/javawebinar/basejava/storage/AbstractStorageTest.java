@@ -9,7 +9,7 @@ import ru.javawebinar.basejava.model.Resume;
 
 public abstract class AbstractStorageTest {
     //protected for accessibility in overriden inherited tests
-    protected Storage storage;
+    Storage storage;
 
     private static final String UUID_1 = "uuid1";
     private static final String UUID_2 = "uuid2";
@@ -65,7 +65,6 @@ public abstract class AbstractStorageTest {
     public void getAll() throws Exception {
         Resume[] resumes = storage.getAll();
         Resume[] testResumes = new Resume[]{TEST_RESUME_1, TEST_RESUME_2, TEST_RESUME_3};
-        Assert.assertEquals(resumes.length, storage.size());
         Assert.assertArrayEquals(testResumes, resumes);
     }
 
@@ -77,21 +76,16 @@ public abstract class AbstractStorageTest {
 
     @Test
     public void save() throws Exception {
+        int sizeBeforeSave = storage.size();
         Resume resume = new Resume("uuid4");
         storage.save(resume);
-        Assert.assertEquals(4, storage.size());
+        Assert.assertEquals(sizeBeforeSave + 1, storage.size());
         Assert.assertEquals(resume, storage.get("uuid4"));
     }
 
     @Test(expected = ExistStorageException.class)
     public void saveExist() throws Exception {
         storage.save(new Resume(UUID_3));
-    }
-
-    //relevant for Array implementations
-    @Test
-    public void checkOverflow() throws Exception {
-        System.out.println("Тест актуален только для реализации с массивом");
     }
 
     @Test(expected = NotExistStorageException.class)

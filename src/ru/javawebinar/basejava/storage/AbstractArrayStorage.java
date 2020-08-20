@@ -8,7 +8,7 @@ import java.util.Objects;
 
 public abstract class AbstractArrayStorage extends AbstractStorage {
 
-    protected static final int STORAGE_LIMIT = 10000;
+    private static final int STORAGE_LIMIT = 10000;
     protected int size = 0;
     protected Resume[] storage = new Resume[STORAGE_LIMIT];
 
@@ -39,7 +39,7 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
     }
 
     @Override
-    protected Resume getting(String uuid, int index) {
+    protected Resume makeGet(String uuid, int index) {
         return storage[index];
     }
 
@@ -51,7 +51,7 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
         return size;
     }
 
-    protected abstract int getIndex(String uuid);
+    protected abstract int getSearchKey(String uuid);
 
     protected abstract void addResume(Resume resume, int index);
 
