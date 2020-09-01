@@ -4,7 +4,10 @@ import ru.javawebinar.basejava.exception.StorageException;
 import ru.javawebinar.basejava.model.Resume;
 
 import java.util.Arrays;
+import java.util.Comparator;
+import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 public abstract class AbstractArrayStorage extends AbstractStorage {
 
@@ -18,42 +21,51 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
     }
 
     @Override
-    protected void makeSave(Resume resume, int index) {
+    protected void makeSave(Resume resume, Object index) {
         if (size == STORAGE_LIMIT) {
             throw new StorageException("Resume " + resume.getUuid() + " не может быть добавлено, база переполнена!", resume.getUuid());
         } else {
-            addResume(resume, index);
+            addResume(resume, (Integer) index);
             size++;
         }
     }
 
     @Override
-    protected void makeUpdate(Resume resume, int index) {
-        storage[index] = resume;
+    protected void makeUpdate(Resume resume, Object index) {
+        storage[(Integer) index] = resume;
     }
 
     @Override
-    protected void makeDelete(String uuid, int index) {
-        delResume(uuid, index);
+    protected void makeDelete(String uuid, Object index) {
+        delResume((Integer) index);
         storage[--size] = null;
     }
 
     @Override
-    protected Resume makeGet(String uuid, int index) {
-        return storage[index];
+    protected Resume makeGet(String uuid, Object index) {
+        return storage[(Integer) index];
     }
 
-    public Resume[] getAll() {
-        return Arrays.stream(storage).filter(Objects::nonNull).toArray(Resume[]::new);
+    @Override
+    protected List<Resume> listOfResumes() {
+        return Arrays.asList(storage);
+    }
+
+    @Override
+    public List<Resume> getAllSorted() {
+        return Arrays.stream(storage).filter(Objects::nonNull).sorted(Comparator.comparing(Resume::getFullname).thenComparing(Resume::getUuid)).collect(Collectors.toList());
+    }
+
+    @Override
+    protected boolean isExist(Object index) {
+        return (Integer) index >= 0;
     }
 
     public int size() {
         return size;
     }
 
-    protected abstract int getSearchKey(String uuid);
-
     protected abstract void addResume(Resume resume, int index);
 
-    protected abstract void delResume(String uuid, int index);
+    protected abstract void delResume(int index);
 }

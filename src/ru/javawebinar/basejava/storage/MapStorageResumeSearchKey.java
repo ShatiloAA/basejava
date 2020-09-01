@@ -5,7 +5,8 @@ import ru.javawebinar.basejava.model.Resume;
 import java.util.*;
 import java.util.stream.Collectors;
 
-public class MapStorage extends AbstractStorage {
+public class MapStorageResumeSearchKey extends AbstractStorage {
+
     private Map<String, Resume> storage = new HashMap<>();
 
     @Override
@@ -39,22 +40,17 @@ public class MapStorage extends AbstractStorage {
     }
 
     @Override
-    public List<Resume> getAllSorted() {
-        return storage.values().stream().sorted(Comparator.comparing(Resume::getFullname).thenComparing(Resume::getUuid)).collect(Collectors.toList());
-    }
-
-    @Override
     public int size() {
         return storage.size();
     }
 
     @Override
-    protected String getSearchKey(String uuid) {
-        return uuid;
+    protected Resume getSearchKey(String uuid) {
+        return storage.get(uuid);
     }
 
     @Override
     protected boolean isExist(Object searchKey) {
-        return storage.containsKey(searchKey);
+        return searchKey != null;
     }
 }

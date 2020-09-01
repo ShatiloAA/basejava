@@ -15,9 +15,9 @@ public class MainTestArrayStorage {
     static final Storage SORTED_STORAGE = new SortedArrayStorage();
 
     public static void main(String[] args) {
-        Resume r1 = new Resume("uuid1");
-        Resume r2 = new Resume("uuid2");
-        Resume r3 = new Resume("uuid3");
+        Resume r1 = new Resume("uuid1","Aaron Short");
+        Resume r2 = new Resume("uuid2","Benny Hill");
+        Resume r3 = new Resume("uuid3", "Mister Bean");
 
         //Test unsorted storage
         out.println(">>> Test unsorted storage");
@@ -60,7 +60,7 @@ public class MainTestArrayStorage {
 
     static void printAll(Storage storage) {
         out.println("\nGet All");
-        for (Resume r : storage.getAll()) {
+        for (Resume r : storage.getAllSorted()) {
             out.println(r);
         }
     }
