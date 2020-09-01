@@ -3,16 +3,13 @@ package ru.javawebinar.basejava.storage;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.Suite;
 import ru.javawebinar.basejava.exception.ExistStorageException;
 import ru.javawebinar.basejava.exception.NotExistStorageException;
 import ru.javawebinar.basejava.model.Resume;
 
 import java.util.List;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
-
-
 
 public abstract class AbstractStorageTest {
 
@@ -23,24 +20,17 @@ public abstract class AbstractStorageTest {
     private static final String UUID_3 = "uuid3";
     private static final String UUID_4 = "uuid4";
 
-    private static final String FULLNAME_1 = "Celine Dion";
-    private static final String FULLNAME_2 = "Astra Rose";
-    private static final String FULLNAME_3 = "Benny Hill";
-    private static final String FULLNAME_4 = "John Doe";
-
     private static final Resume TEST_RESUME_1;
     private static final Resume TEST_RESUME_2;
     private static final Resume TEST_RESUME_3;
     private static final Resume TEST_RESUME_4;
 
     static {
-        TEST_RESUME_1 = new Resume(UUID_1, FULLNAME_1);
-        TEST_RESUME_2 = new Resume(UUID_2, FULLNAME_2);
-        TEST_RESUME_3 = new Resume(UUID_3, FULLNAME_3);
-        TEST_RESUME_4 = new Resume(UUID_4, FULLNAME_4);
+        TEST_RESUME_1 = new Resume(UUID_1, "Celine Dion");
+        TEST_RESUME_2 = new Resume(UUID_2, "Astra Rose");
+        TEST_RESUME_3 = new Resume(UUID_3, "Benny Hill");
+        TEST_RESUME_4 = new Resume(UUID_4, "John Doe");
     }
-
-
 
     public AbstractStorageTest(Storage storage) {
         this.storage = storage;
@@ -68,7 +58,7 @@ public abstract class AbstractStorageTest {
 
     @Test
     public void update() throws Exception {
-        Resume testResume = new Resume(UUID_1, FULLNAME_1);
+        Resume testResume = new Resume(UUID_1, TEST_RESUME_1.getFullname());
         storage.update(testResume);
         Assert.assertSame(testResume, storage.get(UUID_1));
     }
@@ -78,10 +68,10 @@ public abstract class AbstractStorageTest {
         storage.update(TEST_RESUME_4);
     }
 
-     @Test
+    @Test
     public void getAllSorted() throws Exception {
-        List<Resume> resumes = storage.getAllSorted();
-        Assert.assertArrayEquals(Stream.of(TEST_RESUME_2, TEST_RESUME_3, TEST_RESUME_1).toArray(), resumes.toArray());
+        List<Resume> resumes = Stream.of(TEST_RESUME_2, TEST_RESUME_3, TEST_RESUME_1).collect(Collectors.toList());
+        Assert.assertEquals(resumes, storage.getAllSorted());
     }
 
     @Test(expected = NullPointerException.class)
@@ -95,7 +85,7 @@ public abstract class AbstractStorageTest {
         int sizeBeforeSave = storage.size();
         storage.save(TEST_RESUME_4);
         Assert.assertEquals(sizeBeforeSave + 1, storage.size());
-        Assert.assertEquals(TEST_RESUME_4, storage.get("uuid4"));
+        Assert.assertEquals(TEST_RESUME_4, storage.get(UUID_4));
     }
 
     @Test(expected = ExistStorageException.class)
@@ -118,7 +108,7 @@ public abstract class AbstractStorageTest {
 
     @Test
     public void get() throws Exception {
-        Resume resumeTest = new Resume(UUID_3, FULLNAME_3);
+        Resume resumeTest = new Resume(UUID_3, TEST_RESUME_3.getFullname());
         Assert.assertEquals(resumeTest, storage.get(UUID_3));
     }
 

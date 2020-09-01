@@ -6,6 +6,7 @@ import ru.javawebinar.basejava.model.Resume;
 
 import java.util.Comparator;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 public abstract class AbstractStorage implements Storage {
@@ -37,10 +38,14 @@ public abstract class AbstractStorage implements Storage {
     @Override
     public List<Resume> getAllSorted() {
         List<Resume> unsortedList = listOfResumes();
-        return unsortedList.stream().sorted(Comparator.comparing(Resume::getFullname).thenComparing(Resume::getUuid)).collect(Collectors.toList());
+        return unsortedList.stream()
+                .filter(Objects::nonNull)
+                .sorted(Comparator.comparing(Resume::getFullname)
+                .thenComparing(Resume::getUuid))
+                .collect(Collectors.toList());
     }
 
-    protected Object getSearchKeyIfExist(String uuid) {
+    private Object getSearchKeyIfExist(String uuid) {
         Object searchKey = getSearchKey(uuid);
         if (!isExist(searchKey)) {
             throw new NotExistStorageException(uuid);
@@ -49,7 +54,7 @@ public abstract class AbstractStorage implements Storage {
         return searchKey;
     }
 
-    protected Object getSearchKeyIfNotExist(String uuid) {
+    private Object getSearchKeyIfNotExist(String uuid) {
         Object searchKey = getSearchKey(uuid);
         if (isExist(searchKey)) {
             throw new ExistStorageException(uuid);
@@ -63,11 +68,11 @@ public abstract class AbstractStorage implements Storage {
 
     protected abstract boolean isExist(Object searchKey);
 
-    protected abstract void makeSave(Resume resume, Object index);
+    protected abstract void makeSave(Resume resume, Object searchKey);
 
-    protected abstract void makeUpdate(Resume resume, Object index);
+    protected abstract void makeUpdate(Resume resume, Object searchKey);
 
-    protected abstract void makeDelete(String uuid, Object index);
+    protected abstract void makeDelete(String uuid, Object searchKey);
 
-    protected abstract Resume makeGet(String uuid, Object index);
+    protected abstract Resume makeGet(String uuid, Object searchKey);
 }
