@@ -6,7 +6,7 @@ import ru.javawebinar.basejava.model.Resume;
 import java.util.Arrays;
 import java.util.List;
 
-public abstract class AbstractArrayStorage extends AbstractStorage {
+public abstract class AbstractArrayStorage extends AbstractStorage<Integer> {
 
     private static final int STORAGE_LIMIT = 10000;
     protected int size = 0;
@@ -18,29 +18,29 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
     }
 
     @Override
-    protected void makeSave(Resume resume, Object index) {
+    protected void makeSave(Resume resume, Integer index) {
         if (size == STORAGE_LIMIT) {
             throw new StorageException("Resume " + resume.getUuid() + " не может быть добавлено, база переполнена!", resume.getUuid());
         } else {
-            addResume(resume, (Integer) index);
+            addResume(resume, index);
             size++;
         }
     }
 
     @Override
-    protected void makeUpdate(Resume resume, Object index) {
-        storage[(Integer) index] = resume;
+    protected void makeUpdate(Resume resume, Integer index) {
+        storage[index] = resume;
     }
 
     @Override
-    protected void makeDelete(String uuid, Object index) {
-        delResume((Integer) index);
+    protected void makeDelete(String uuid, Integer index) {
+        delResume(index);
         storage[--size] = null;
     }
 
     @Override
-    protected Resume makeGet(String uuid, Object index) {
-        return storage[(Integer) index];
+    protected Resume makeGet(Integer index) {
+        return storage[index];
     }
 
     @Override
@@ -49,8 +49,8 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
     }
 
     @Override
-    protected boolean isExist(Object index) {
-        return (Integer) index >= 0;
+    protected boolean isExist(Integer index) {
+        return index >= 0;
     }
 
     public int size() {
