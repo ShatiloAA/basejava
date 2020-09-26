@@ -11,17 +11,17 @@ public class Resume {
 
     // Unique identifier
     private final String uuid;
-    private String fullname;
+    private String fullName;
     private final Map<ContactType, String> contacts = new EnumMap<>(ContactType.class);
-    private final Map<SectionType, Section> sections = new EnumMap<>(SectionType.class);
+    private final Map<SectionType, AbstractSection> sections = new EnumMap<>(SectionType.class);
 
     public Resume() {
         uuid = UUID.randomUUID().toString();
     }
 
-    public Resume(String uuid, String fullname) {
+    public Resume(String uuid, String fullName) {
         this.uuid = uuid;
-        this.fullname = fullname;
+        this.fullName = fullName;
     }
 
     public String getContact(ContactType contactType) {
@@ -32,11 +32,11 @@ public class Resume {
         contacts.put(contactType, contactValue);
     }
 
-    public Section getSection(SectionType sectionType) {
+    public AbstractSection getSection(SectionType sectionType) {
         return sections.get(sectionType);
     }
 
-    public void setSection(SectionType sectionType, Section sectionValue) {
+    public void setSection(SectionType sectionType, AbstractSection sectionValue) {
         sections.put(sectionType, sectionValue);
     }
 
@@ -44,8 +44,8 @@ public class Resume {
         return uuid;
     }
 
-    public String getFullname() {
-        return fullname;
+    public String getFullName() {
+        return fullName;
     }
 
     @Override
@@ -60,11 +60,18 @@ public class Resume {
 
         Resume resume = (Resume) o;
 
-        return uuid.equals(resume.uuid);
+        if (!uuid.equals(resume.uuid)) return false;
+        if (!fullName.equals(resume.fullName)) return false;
+        if (!contacts.equals(resume.contacts)) return false;
+        return sections.equals(resume.sections);
     }
 
     @Override
     public int hashCode() {
-        return uuid.hashCode();
+        int result = uuid.hashCode();
+        result = 31 * result + fullName.hashCode();
+        result = 31 * result + contacts.hashCode();
+        result = 31 * result + sections.hashCode();
+        return result;
     }
 }

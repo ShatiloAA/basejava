@@ -33,7 +33,7 @@ public class MapStorageResumeSearchKey extends AbstractStorage<Resume> {
 
     @Override
     protected Resume makeGet(Resume searchKey) {
-        return storage.get(searchKey.getUuid());
+        return searchKey;
     }
 
     @Override

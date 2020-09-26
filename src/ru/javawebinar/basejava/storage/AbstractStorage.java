@@ -61,7 +61,7 @@ public abstract class AbstractStorage<SK> implements Storage {
         List<Resume> unsortedList = listOfResumes();
         return unsortedList.stream()
                 .filter(Objects::nonNull)
-                .sorted(Comparator.comparing(Resume::getFullname)
+                .sorted(Comparator.comparing(Resume::getFullName)
                 .thenComparing(Resume::getUuid))
                 .collect(Collectors.toList());
     }
