@@ -7,9 +7,9 @@ import ru.javawebinar.basejava.exception.ExistStorageException;
 import ru.javawebinar.basejava.exception.NotExistStorageException;
 import ru.javawebinar.basejava.model.Resume;
 
+import java.util.Arrays;
+import java.util.Comparator;
 import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 public abstract class AbstractStorageTest {
 
@@ -58,7 +58,7 @@ public abstract class AbstractStorageTest {
 
     @Test
     public void update() throws Exception {
-        Resume testResume = new Resume(UUID_1, TEST_RESUME_1.getFullName());
+        Resume testResume = new Resume(UUID_1, "Arnold Schwarzenegger");
         storage.update(testResume);
         Assert.assertSame(testResume, storage.get(UUID_1));
     }
@@ -70,14 +70,9 @@ public abstract class AbstractStorageTest {
 
     @Test
     public void getAllSorted() throws Exception {
-        List<Resume> resumes = Stream.of(TEST_RESUME_2, TEST_RESUME_3, TEST_RESUME_1).collect(Collectors.toList());
-        Assert.assertEquals(resumes, storage.getAllSorted());
-    }
-
-    @Test(expected = NullPointerException.class)
-    public void unsuccessfulGetAll() throws Exception {
-        storage = null;
-        getAllSorted();
+        List<Resume> expectedResumes = Arrays.asList(TEST_RESUME_1, TEST_RESUME_2, TEST_RESUME_3);
+        expectedResumes.sort(Comparator.comparing(Resume::getFullName));
+        Assert.assertEquals(expectedResumes, storage.getAllSorted());
     }
 
     @Test

@@ -20,10 +20,10 @@ public class ResumeTestData {
         testResume.setContact(STACKOVERFLOW, "Профиль Stackoverflow");
         testResume.setContact(HOMEPAGE, "Домашняя страница");
 
-        testResume.setSection(PERSONAL, new TextAbstractSection("Ведущий стажировок и корпоративного обучения " +
+        testResume.setSection(PERSONAL, new TextSection("Ведущий стажировок и корпоративного обучения " +
                 "по Java Web и Enterprise технологиям") {
         });
-        testResume.setSection(OBJECTIVE, new TextAbstractSection("Аналитический склад ума, сильная логика, " +
+        testResume.setSection(OBJECTIVE, new TextSection("Аналитический склад ума, сильная логика, " +
                 "креативность, инициативность. Пурист кода и архитектуры."));
 
         List<String> achievementsList = new ArrayList<>();
@@ -45,7 +45,7 @@ public class ResumeTestData {
                 "Реализация онлайн клиента для администрирования и мониторинга системы по JMX (Jython/ Django).");
         achievementsList.add("Реализация протоколов по приему платежей всех основных платежных системы России " +
                 "(Cyberplat, Eport, Chronopay, Сбербанк), Белоруcсии(Erip, Osmp) и Никарагуа.");
-        testResume.setSection(ACHIEVEMENT, new ListAbstractSection(achievementsList));
+        testResume.setSection(ACHIEVEMENT, new ListSection(achievementsList));
 
         List<String> qualificationsList = new ArrayList<>();
         qualificationsList.add("JEE AS: GlassFish (v2.1, v3), OC4J, JBoss, Tomcat, Jetty, WebLogic, WSO2");
@@ -54,7 +54,7 @@ public class ResumeTestData {
         qualificationsList.add("MySQL, SQLite, MS SQL, HSQLDB");
         qualificationsList.add("Languages: Java, Scala, Python/Jython/PL-Python, JavaScript, Groovy,");
         qualificationsList.add("XML/XSD/XSLT, SQL, C/C++, Unix shell scripts,");
-        testResume.setSection(QUALIFICATIONS, new ListAbstractSection(qualificationsList));
+        testResume.setSection(QUALIFICATIONS, new ListSection(qualificationsList));
 
         List<Practice> experienceList = new ArrayList<>();
         experienceList.add(new Practice(
@@ -80,7 +80,7 @@ public class ResumeTestData {
                         "Jasper, Oracle). Реализация клиентской и серверной части CRM. Реализация RIA-приложения " +
                         "для администрирования, мониторинга и анализа результатов в области алгоритмического трейдинга. " +
                         "JPA, Spring, Spring-MVC, GWT, ExtGWT (GXT), Highstock, Commet, HTML5."));
-        testResume.setSection(EXPERIENCE, new PracticeAbstractSection(experienceList));
+        testResume.setSection(EXPERIENCE, new PracticeSection(experienceList));
 
         List<Practice> educationList = new ArrayList<>();
         educationList.add(new Practice(
@@ -95,7 +95,7 @@ public class ResumeTestData {
                 YearMonth.of(2013, 05),
                 "Курс \"Объектно-ориентированный анализ ИС. Концептуальное моделирование на UML.\""
         ));
-        testResume.setSection(EDUCATION, new PracticeAbstractSection(educationList));
+        testResume.setSection(EDUCATION, new PracticeSection(educationList));
 
         for (ContactType contactType : ContactType.values()) {
             System.out.println(contactType + " " + testResume.getContact(contactType));

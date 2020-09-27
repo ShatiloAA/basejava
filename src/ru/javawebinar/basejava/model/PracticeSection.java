@@ -2,10 +2,10 @@ package ru.javawebinar.basejava.model;
 
 import java.util.List;
 
-public class PracticeAbstractSection extends AbstractSection {
+public class PracticeSection extends AbstractSection {
     private final List<Practice> practices;
 
-    public PracticeAbstractSection(List<Practice> practices) {
+    public PracticeSection(List<Practice> practices) {
         this.practices = practices;
     }
 
@@ -18,7 +18,7 @@ public class PracticeAbstractSection extends AbstractSection {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        PracticeAbstractSection that = (PracticeAbstractSection) o;
+        PracticeSection that = (PracticeSection) o;
 
         return practices.equals(that.practices);
     }

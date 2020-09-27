@@ -1,9 +1,9 @@
 package ru.javawebinar.basejava.model;
 
-public class TextAbstractSection extends AbstractSection {
+public class TextSection extends AbstractSection {
     private final String description;
 
-    public TextAbstractSection(String description) {
+    public TextSection(String description) {
         this.description = description;
     }
 
