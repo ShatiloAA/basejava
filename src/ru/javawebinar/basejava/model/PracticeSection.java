@@ -1,15 +1,15 @@
 package ru.javawebinar.basejava.model;
 
-import java.util.List;
+import java.util.Map;
 
 public class PracticeSection extends AbstractSection {
-    private final List<Practice> practices;
+    private final Map<String, Practice> practices;
 
-    public PracticeSection(List<Practice> practices) {
+    public PracticeSection(Map<String, Practice> practices) {
         this.practices = practices;
     }
 
-    public List<Practice> getPractices() {
+    public Map<String, Practice> getPractices() {
         return practices;
     }
 
@@ -27,6 +27,8 @@ public class PracticeSection extends AbstractSection {
     public int hashCode() {
         return practices.hashCode();
     }
+
+
 
     @Override
     public String toString() {

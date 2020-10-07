@@ -1,12 +1,12 @@
 package ru.javawebinar.basejava;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
 
 public class MainFile {
     public static void main(String[] args) {
-        String filePath = ".\\.gitignore";
+        walk("./src/ru/javawebinar/basejava");
+
+        /*String filePath = ".\\.gitignore";
 
         File file = new File(filePath);
         try {
@@ -28,6 +28,25 @@ public class MainFile {
             System.out.println(fis.read());
         } catch (IOException e) {
             throw new RuntimeException(e);
+        }*/
+
+    }
+
+    static void walk(String path) {
+        File directory = new File(path);
+        File[] dirList = directory.listFiles();
+        if (dirList == null) {
+            return;
+        }
+
+        for (File file : dirList) {
+            if (file.isDirectory()) {
+                System.out.println("Directory: " + file.getName());
+                walk(file.getAbsolutePath());
+            } else {
+                System.out.println("File: " + file.getName());
+            }
+
         }
     }
 }

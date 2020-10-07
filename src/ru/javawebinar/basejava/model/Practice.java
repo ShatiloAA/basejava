@@ -1,38 +1,30 @@
 package ru.javawebinar.basejava.model;
 
-import java.time.YearMonth;
+import java.util.List;
 
 public class Practice {
-    private final String name;
-    private final YearMonth startDate;
-    private YearMonth endDate;
-    private final String description;
+    private final String title;
+    private final Link homepage;
+    private final List<Period> periods;
 
-    public Practice(String name, YearMonth startDate, YearMonth endDate, String description) {
-        this.name = name;
-        this.startDate = startDate;
-        this.endDate = endDate;
-        this.description = description;
+    public Practice(String title, String url, List<Period> periods) {
+        this.title = title;
+        this.homepage = new Link(title, url);
+        this.periods = periods;
     }
 
-    public String getName() {
-        return name;
+    public Link getHomepage() {
+        return homepage;
     }
 
-    public YearMonth getStartDate() {
-        return startDate;
+    public List<Period> getPeriods() {
+        return periods;
     }
 
-    public YearMonth getEndDate() {
-        return endDate;
-    }
-
-    public void setEndDate(YearMonth endDate) {
-        this.endDate = endDate;
-    }
-
-    public String getDescription() {
-        return description;
+    @Override
+    public String toString() {
+        return  title + ", " + homepage +
+                ", " + periods;
     }
 
     @Override
@@ -42,23 +34,18 @@ public class Practice {
 
         Practice practice = (Practice) o;
 
-        if (!name.equals(practice.name)) return false;
-        if (!startDate.equals(practice.startDate)) return false;
-        if (endDate != null ? !endDate.equals(practice.endDate) : practice.endDate != null) return false;
-        return description.equals(practice.description);
+        if (!title.equals(practice.title)) return false;
+        if (homepage != null ? !homepage.equals(practice.homepage) : practice.homepage != null) return false;
+        return periods.equals(practice.periods);
     }
 
     @Override
     public int hashCode() {
-        int result = name.hashCode();
-        result = 31 * result + startDate.hashCode();
-        result = 31 * result + (endDate != null ? endDate.hashCode() : 0);
-        result = 31 * result + description.hashCode();
+        int result = title.hashCode();
+        result = 31 * result + (homepage != null ? homepage.hashCode() : 0);
+        result = 31 * result + periods.hashCode();
         return result;
     }
 
-    @Override
-    public String toString() {
-        return "\n" + name + " " + startDate + " - " + (endDate == null ? "now" : endDate) + " " + description + " ";
-    }
+    //return "\n" + name + " " + startDate + " - " + (endDate == null ? "now" : endDate) + " " + description + " ";
 }

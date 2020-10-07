@@ -11,6 +11,8 @@ import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 
+import static ru.javawebinar.basejava.model.ResumeTestData.resumeGenerator;
+
 public abstract class AbstractStorageTest {
 
     Storage storage;
@@ -20,16 +22,21 @@ public abstract class AbstractStorageTest {
     private static final String UUID_3 = "uuid3";
     private static final String UUID_4 = "uuid4";
 
+    private static final String FULLNAME_1 = "Celine Dion";
+    private static final String FULLNAME_2 = "Astra Rose";
+    private static final String FULLNAME_3 = "Benny Hill";
+    private static final String FULLNAME_4 = "John Doe";
+
     private static final Resume TEST_RESUME_1;
     private static final Resume TEST_RESUME_2;
     private static final Resume TEST_RESUME_3;
     private static final Resume TEST_RESUME_4;
 
     static {
-        TEST_RESUME_1 = new Resume(UUID_1, "Celine Dion");
-        TEST_RESUME_2 = new Resume(UUID_2, "Astra Rose");
-        TEST_RESUME_3 = new Resume(UUID_3, "Benny Hill");
-        TEST_RESUME_4 = new Resume(UUID_4, "John Doe");
+        TEST_RESUME_1 = resumeGenerator(UUID_1, FULLNAME_1);
+        TEST_RESUME_2 = resumeGenerator(UUID_2, FULLNAME_2);
+        TEST_RESUME_3 = resumeGenerator(UUID_3, FULLNAME_3);
+        TEST_RESUME_4 = resumeGenerator(UUID_4, FULLNAME_4);
     }
 
     public AbstractStorageTest(Storage storage) {
@@ -58,7 +65,7 @@ public abstract class AbstractStorageTest {
 
     @Test
     public void update() throws Exception {
-        Resume testResume = new Resume(UUID_1, "Arnold Schwarzenegger");
+        Resume testResume = resumeGenerator(UUID_1, "Arnold Schwarzenegger");
         storage.update(testResume);
         Assert.assertSame(testResume, storage.get(UUID_1));
     }
@@ -103,7 +110,7 @@ public abstract class AbstractStorageTest {
 
     @Test
     public void get() throws Exception {
-        Resume resumeTest = new Resume(UUID_3, TEST_RESUME_3.getFullName());
+        Resume resumeTest = resumeGenerator(UUID_3, FULLNAME_3);
         Assert.assertEquals(resumeTest, storage.get(UUID_3));
     }
 
