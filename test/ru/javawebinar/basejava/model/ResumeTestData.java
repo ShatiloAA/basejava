@@ -45,19 +45,19 @@ public class ResumeTestData {
         qualificationsList.add("XML/XSD/XSLT, SQL, C/C++, Unix shell scripts,");
         resume.setSection(QUALIFICATIONS, new ListSection(qualificationsList));
 
-        Map<String, Practice> experienceMap = new HashMap<>();
-        experienceMap.put("Java Online Projects", new Practice(
+        List<Organization> experienceList= new ArrayList<>();
+        experienceList.add(new Organization(
                 "Java Online Projects",
                 "javaops.ru",
-                Arrays.asList(new Period(
+                Arrays.asList(new Experience(
                         DateUtil.of(2013, OCTOBER),
                         LocalDate.now(),
                         "Автор проекта.\n" +
                                 "Создание, организация и проведение Java онлайн проектов и стажировок."))));
-        experienceMap.put("Wrike", new Practice(
+        experienceList.add(new Organization(
                 "Wrike",
                 "wrike.com",
-                Arrays.asList(new Period(
+                Arrays.asList(new Experience(
                         DateUtil.of(2016, JANUARY),
                         DateUtil.of(2014, OCTOBER),
                         "Старший разработчик (backend)\n" +
@@ -65,24 +65,24 @@ public class ResumeTestData {
                                 "(Java 8 API, Maven, Spring, MyBatis, Guava, Vaadin, PostgreSQL, Redis). " +
                                 "Двухфакторная аутентификация, авторизация по OAuth1, OAuth2, JWT SSO."))));
 
-        resume.setSection(EXPERIENCE, new PracticeSection(experienceMap));
+        resume.setSection(EXPERIENCE, new OrganizationSection(experienceList));
 
-        Map<String, Practice> educationMap = new HashMap<>();
-        educationMap.put("Coursera", new Practice(
+        List<Organization> educationList = new ArrayList<>();
+        educationList.add(new Organization(
                 "Coursera",
                 "Coursera.com",
-                Arrays.asList(new Period(
+                Arrays.asList(new Experience(
                         DateUtil.of(2013, MARCH),
                         DateUtil.of(2013, MAY),
                         "\"Functional Programming Principles in Scala\" by Martin Odersky"))));
-        educationMap.put("Luxoft", new Practice(
+        educationList.add(new Organization(
                 "Luxoft",
                 "Luxoft.com",
-                Arrays.asList(new Period(
+                Arrays.asList(new Experience(
                         DateUtil.of(2014, FEBRUARY),
                         DateUtil.of(2014, APRIL),
                         "Курс \"Объектно-ориентированный анализ ИС. Концептуальное моделирование на UML.\""))));
-        resume.setSection(EDUCATION, new PracticeSection(educationMap));
+        resume.setSection(EDUCATION, new OrganizationSection(educationList));
 
         return resume;
     }

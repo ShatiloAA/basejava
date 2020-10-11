@@ -2,29 +2,29 @@ package ru.javawebinar.basejava.model;
 
 import java.util.List;
 
-public class Practice {
+public class Organization {
     private final String title;
     private final Link homepage;
-    private final List<Period> periods;
+    private final List<Experience> experiences;
 
-    public Practice(String title, String url, List<Period> periods) {
+    public Organization(String title, String url, List<Experience> experiences) {
         this.title = title;
         this.homepage = new Link(title, url);
-        this.periods = periods;
+        this.experiences = experiences;
     }
 
     public Link getHomepage() {
         return homepage;
     }
 
-    public List<Period> getPeriods() {
-        return periods;
+    public List<Experience> getExperiences() {
+        return experiences;
     }
 
     @Override
     public String toString() {
         return  title + ", " + homepage +
-                ", " + periods;
+                ", " + experiences;
     }
 
     @Override
@@ -32,18 +32,18 @@ public class Practice {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        Practice practice = (Practice) o;
+        Organization organization = (Organization) o;
 
-        if (!title.equals(practice.title)) return false;
-        if (homepage != null ? !homepage.equals(practice.homepage) : practice.homepage != null) return false;
-        return periods.equals(practice.periods);
+        if (!title.equals(organization.title)) return false;
+        if (homepage != null ? !homepage.equals(organization.homepage) : organization.homepage != null) return false;
+        return experiences.equals(organization.experiences);
     }
 
     @Override
     public int hashCode() {
         int result = title.hashCode();
         result = 31 * result + (homepage != null ? homepage.hashCode() : 0);
-        result = 31 * result + periods.hashCode();
+        result = 31 * result + experiences.hashCode();
         return result;
     }
 

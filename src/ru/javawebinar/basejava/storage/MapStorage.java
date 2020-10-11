@@ -26,8 +26,8 @@ public class MapStorage extends AbstractStorage<String> {
     }
 
     @Override
-    protected void makeDelete(String uuid, String searchKey) {
-        storage.remove(uuid);
+    protected void makeDelete(String searchKey) {
+        storage.remove(searchKey);
     }
 
     @Override

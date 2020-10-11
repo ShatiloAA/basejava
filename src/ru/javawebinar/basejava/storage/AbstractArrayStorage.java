@@ -33,7 +33,7 @@ public abstract class AbstractArrayStorage extends AbstractStorage<Integer> {
     }
 
     @Override
-    protected void makeDelete(String uuid, Integer index) {
+    protected void makeDelete(Integer index) {
         delResume(index);
         storage[--size] = null;
     }

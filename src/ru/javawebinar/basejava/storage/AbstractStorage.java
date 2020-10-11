@@ -24,7 +24,7 @@ public abstract class AbstractStorage<SK> implements Storage {
 
     protected abstract void makeUpdate(Resume resume, SK searchKey);
 
-    protected abstract void makeDelete(String uuid, SK searchKey);
+    protected abstract void makeDelete(SK searchKey);
 
     protected abstract Resume makeGet(SK searchKey);
 
@@ -46,7 +46,7 @@ public abstract class AbstractStorage<SK> implements Storage {
     public void delete(String uuid) {
         LOG.info("Delete " + uuid);
         SK searchKey = getSearchKeyIfExist(uuid);
-        makeDelete(uuid, searchKey);
+        makeDelete(searchKey);
     }
 
     @Override

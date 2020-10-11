@@ -1,18 +1,16 @@
 package ru.javawebinar.basejava.model;
 
-import ru.javawebinar.basejava.util.DateUtil;
-
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Objects;
 
-public class Period {
+public class Experience {
 
     private final LocalDate startDate;
     private LocalDate endDate;
     private final String description;
 
-    public Period(LocalDate startDate, LocalDate endDate, String description) {
+    public Experience(LocalDate startDate, LocalDate endDate, String description) {
         Objects.requireNonNull(startDate, "startDate must not be null");
         Objects.requireNonNull(endDate, "endDate must not be null");
         Objects.requireNonNull(description, "description must not be null");
@@ -42,11 +40,11 @@ public class Period {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        Period period = (Period) o;
+        Experience experience = (Experience) o;
 
-        if (!startDate.equals(period.startDate)) return false;
-        if (!endDate.equals(period.endDate)) return false;
-        return description.equals(period.description);
+        if (!startDate.equals(experience.startDate)) return false;
+        if (!endDate.equals(experience.endDate)) return false;
+        return description.equals(experience.description);
     }
 
     @Override
