@@ -2,22 +2,24 @@ package ru.javawebinar.basejava.storage;
 
 import ru.javawebinar.basejava.exception.StorageException;
 import ru.javawebinar.basejava.model.Resume;
+import ru.javawebinar.basejava.storage.serializer.Serializer;
 
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-public abstract class AbstractFileStorage extends AbstractStorage<File> {
+public abstract class FileStorage extends AbstractStorage<File> {
 
     private File directory;
 
-    protected abstract void makeWrite(Resume resume, File file) throws IOException;
+    private Serializer serializer;
 
-    protected abstract Resume makeRead(File file) throws IOException;
+    protected abstract void makeWrite(Resume resume, OutputStream os) throws IOException;
 
-    protected AbstractFileStorage(File directory) {
+    protected abstract Resume makeRead(InputStream is) throws IOException;
+
+    protected FileStorage(File directory, Serializer serializer) {
         Objects.requireNonNull(directory);
         if (!directory.isDirectory()) {
             throw new IllegalArgumentException(directory.getAbsolutePath() + "is not directory!");
@@ -26,6 +28,46 @@ public abstract class AbstractFileStorage extends AbstractStorage<File> {
             throw new IllegalArgumentException(directory.getAbsolutePath() + "is not readable/writable!");
         }
         this.directory = directory;
+        this.serializer = serializer;
+    }
+
+    public void setSerializer(Serializer serializer) {
+        this.serializer = serializer;
+    }
+
+    @Override
+    protected void makeSave(Resume resume, File file) {
+        try {
+            file.createNewFile();
+        } catch (IOException e) {
+            throw new StorageException("IO error", file.getName(), e);
+        }
+        makeUpdate(resume, file);
+    }
+
+    @Override
+    protected void makeUpdate(Resume resume, File file) {
+        try {
+            serializer.makeWrite(resume, new BufferedOutputStream(new FileOutputStream(file)));
+        } catch (IOException e) {
+            throw new StorageException("IO error", file.getName(), e);
+        }
+    }
+
+    @Override
+    protected void makeDelete(File file) {
+        if (!file.delete()) {
+            throw new StorageException("File delete error", file.getName());
+        }
+    }
+
+    @Override
+    protected Resume makeGet(File file) {
+        try {
+            return serializer.makeRead(new BufferedInputStream(new FileInputStream(file)));
+        } catch (IOException e) {
+            throw new StorageException("IO error", file.getName(), e);
+        }
     }
 
     @Override
@@ -51,41 +93,6 @@ public abstract class AbstractFileStorage extends AbstractStorage<File> {
         return file.exists();
     }
 
-    @Override
-    protected void makeSave(Resume resume, File file) {
-        try {
-            file.createNewFile();
-        } catch (IOException e) {
-            throw new StorageException("IO error", file.getName(), e);
-        }
-        makeUpdate(resume, file);
-    }
-
-    @Override
-    protected void makeUpdate(Resume resume, File file) {
-        try {
-            makeWrite(resume, file);
-        } catch (IOException e) {
-            throw new StorageException("IO error", file.getName(), e);
-        }
-
-    }
-
-    @Override
-    protected void makeDelete(File file) {
-        if (!file.delete()) {
-            throw new StorageException("File delete error", file.getName());
-        }
-    }
-
-    @Override
-    protected Resume makeGet(File file) {
-        try {
-            return makeRead(file);
-        } catch (IOException e) {
-            throw new StorageException("IO error", file.getName(), e);
-        }
-    }
 
     @Override
     public void clear() {
