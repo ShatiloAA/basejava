@@ -62,27 +62,4 @@ public class MainFile {
             }
         }
     }
-/*
-    static void walk2(File directory, int count) {
-        File[] dirList = directory.listFiles();
-        if (dirList == null) {
-            return;
-        }
-        for (File file : dirList) {
-            if (file.isDirectory()) {
-                System.out.println(indents(count) + "Directory: " + file.getName());
-                walk(file, indents(++count));
-            } else {
-                System.out.println(indents(count)  + "File: " + file.getName());
-            }
-        }
-    }
-
-    static String indents(int count) {
-        String spaces = "";
-        for (int i = 0; i < count; i++) {
-            spaces = spaces + " ";
-        }
-        return spaces;
-    }*/
 }

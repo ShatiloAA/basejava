@@ -1,8 +1,9 @@
 package ru.javawebinar.basejava.model;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class Organization {
+public class Organization implements Serializable {
     private final String title;
     private final Link homepage;
     private final List<Experience> experiences;

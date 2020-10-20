@@ -13,14 +13,10 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-public abstract class PathStorage extends AbstractStorage<Path> {
+public class PathStorage extends AbstractStorage<Path> {
     private Path directory;
 
     private Serializer serializer;
-
-    protected abstract void makeWrite(Resume resume, OutputStream os) throws IOException;
-
-    protected abstract Resume makeRead(InputStream is) throws IOException;
 
     protected PathStorage(String dir, Serializer serializer) {
         directory = Paths.get(dir);
@@ -86,7 +82,7 @@ public abstract class PathStorage extends AbstractStorage<Path> {
 
     @Override
     protected Path getSearchKey(String uuid) {
-        return Paths.get(directory.toString() + uuid);
+        return Paths.get(directory.toString(), uuid);
     }
 
     @Override

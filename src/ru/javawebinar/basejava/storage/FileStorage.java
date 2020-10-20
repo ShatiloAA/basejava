@@ -9,23 +9,19 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-public abstract class FileStorage extends AbstractStorage<File> {
+public class FileStorage extends AbstractStorage<File> {
 
     private File directory;
 
     private Serializer serializer;
 
-    protected abstract void makeWrite(Resume resume, OutputStream os) throws IOException;
-
-    protected abstract Resume makeRead(InputStream is) throws IOException;
-
     protected FileStorage(File directory, Serializer serializer) {
         Objects.requireNonNull(directory);
         if (!directory.isDirectory()) {
-            throw new IllegalArgumentException(directory.getAbsolutePath() + "is not directory!");
+            throw new IllegalArgumentException(directory.getAbsolutePath() + " is not directory!");
         }
-        if (!directory.canRead() || directory.canWrite()) {
-            throw new IllegalArgumentException(directory.getAbsolutePath() + "is not readable/writable!");
+        if (!directory.canRead() || !directory.canWrite()) {
+            throw new IllegalArgumentException(directory.getAbsolutePath() + " is not readable/writable!");
         }
         this.directory = directory;
         this.serializer = serializer;
@@ -73,7 +69,7 @@ public abstract class FileStorage extends AbstractStorage<File> {
     @Override
     protected List<Resume> listOfResumes() {
         File[] files = directory.listFiles();
-        if (files != null) {
+        if (files == null) {
             throw new StorageException("Directory read error", null);
         }
         List<Resume> resumeList = new ArrayList<>();
@@ -92,7 +88,6 @@ public abstract class FileStorage extends AbstractStorage<File> {
     protected boolean isExist(File file) {
         return file.exists();
     }
-
 
     @Override
     public void clear() {

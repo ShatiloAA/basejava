@@ -88,12 +88,12 @@ public class ResumeTestData {
     }
 
     public static void main(String[] args) {
-        Resume resume = resumeGenerator("1", "Georgy Kislin");
+        /*Resume resume = resumeGenerator("1", "Georgy Kislin");
         for (ContactType contactType : ContactType.values()) {
             System.out.println(resume.getContact(contactType));
         }
         for (SectionType sectionType : SectionType.values()) {
             System.out.println(resume.getSection(sectionType));
-        }
+        }*/
     }
 }
