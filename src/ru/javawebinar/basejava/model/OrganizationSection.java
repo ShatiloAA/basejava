@@ -1,9 +1,8 @@
 package ru.javawebinar.basejava.model;
 
 import java.util.List;
-import java.util.Map;
 
-public class OrganizationSection extends AbstractSection {
+public class OrganizationSection extends Section {
     private final List<Organization> organizations;
 
     public OrganizationSection(List<Organization> organizations) {

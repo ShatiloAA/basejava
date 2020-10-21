@@ -12,7 +12,7 @@ import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 
-import static ru.javawebinar.basejava.model.ResumeTestData.resumeGenerator;
+import static ru.javawebinar.basejava.model.ResumeTestData.fillOutResume;
 
 public abstract class AbstractStorageTest {
 
@@ -32,10 +32,10 @@ public abstract class AbstractStorageTest {
     private static final Resume TEST_RESUME_4;
 
     static {
-        TEST_RESUME_1 = resumeGenerator(UUID_1, "Celine Dion");
-        TEST_RESUME_2 = resumeGenerator(UUID_2, "Astra Rose");
-        TEST_RESUME_3 = resumeGenerator(UUID_3, "Benny Hill");
-        TEST_RESUME_4 = resumeGenerator(UUID_4, "John Doe");
+        TEST_RESUME_1 = fillOutResume(UUID_1, "Celine Dion");
+        TEST_RESUME_2 = fillOutResume(UUID_2, "Astra Rose");
+        TEST_RESUME_3 = fillOutResume(UUID_3, "Benny Hill");
+        TEST_RESUME_4 = fillOutResume(UUID_4, "John Doe");
     }
 
     public AbstractStorageTest(Storage storage) {
@@ -64,7 +64,7 @@ public abstract class AbstractStorageTest {
 
     @Test
     public void update() throws Exception {
-        Resume testResume = resumeGenerator(UUID_1, "Arnold Schwarzenegger");
+        Resume testResume = fillOutResume(UUID_1, "Arnold Schwarzenegger");
         storage.update(testResume);
         //Assert.assertSame(testResume, storage.get(UUID_1));
         Assert.assertEquals(testResume, storage.get(UUID_1));
@@ -110,7 +110,7 @@ public abstract class AbstractStorageTest {
 
     @Test
     public void get() throws Exception {
-        Resume resumeTest = resumeGenerator(UUID_3, "Benny Hill");
+        Resume resumeTest = fillOutResume(UUID_3, "Benny Hill");
         Assert.assertEquals(resumeTest, storage.get(UUID_3));
     }
 

@@ -10,12 +10,12 @@ import java.util.UUID;
  * Initial resume class
  */
 public class Resume implements Serializable, Comparable<Resume> {
-
+    private static final long serialVersionUID = 1L;
     // Unique identifier
     private final String uuid;
     private String fullName;
     private final Map<ContactType, String> contacts = new EnumMap<>(ContactType.class);
-    private final Map<SectionType, AbstractSection> sections = new EnumMap<>(SectionType.class);
+    private final Map<SectionType, Section> sections = new EnumMap<>(SectionType.class);
 
     public Resume(String fullName) {
         this(UUID.randomUUID().toString(), fullName);
@@ -36,11 +36,11 @@ public class Resume implements Serializable, Comparable<Resume> {
         contacts.put(contactType, contactValue);
     }
 
-    public AbstractSection getSection(SectionType sectionType) {
+    public Section getSection(SectionType sectionType) {
         return sections.get(sectionType);
     }
 
-    public void setSection(SectionType sectionType, AbstractSection sectionValue) {
+    public void setSection(SectionType sectionType, Section sectionValue) {
         sections.put(sectionType, sectionValue);
     }
 

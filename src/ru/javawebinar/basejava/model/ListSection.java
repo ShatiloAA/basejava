@@ -2,7 +2,7 @@ package ru.javawebinar.basejava.model;
 
 import java.util.List;
 
-public class ListSection extends AbstractSection {
+public class ListSection extends Section {
     private final List<String> sectionList;
 
     public ListSection(List<String> infoList) {
