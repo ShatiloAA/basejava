@@ -1,5 +1,7 @@
 package ru.javawebinar.basejava.model;
 
+import java.util.Objects;
+
 public class TextSection extends Section {
     private final String description;
 
@@ -20,14 +22,12 @@ public class TextSection extends Section {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-
         TextSection that = (TextSection) o;
-
-        return description != null ? description.equals(that.description) : that.description == null;
+        return Objects.equals(description, that.description);
     }
 
     @Override
     public int hashCode() {
-        return description != null ? description.hashCode() : 0;
+        return Objects.hash(description);
     }
 }

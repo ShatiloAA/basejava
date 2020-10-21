@@ -38,18 +38,14 @@ public class Organization implements Serializable {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-
         Organization that = (Organization) o;
-
-        if (homePage != null ? !homePage.equals(that.homePage) : that.homePage != null) return false;
-        return positions != null ? positions.equals(that.positions) : that.positions == null;
+        return Objects.equals(homePage, that.homePage) &&
+                Objects.equals(positions, that.positions);
     }
 
     @Override
     public int hashCode() {
-        int result = homePage != null ? homePage.hashCode() : 0;
-        result = 31 * result + (positions != null ? positions.hashCode() : 0);
-        return result;
+        return Objects.hash(homePage, positions);
     }
 
     public static class Position implements Serializable {
@@ -89,15 +85,15 @@ public class Organization implements Serializable {
             if (this == o) return true;
             if (o == null || getClass() != o.getClass()) return false;
             Position position = (Position) o;
-            return Objects.equals(startDate, position.startDate) &&
+            return Objects.equals(title, position.title) &&
+                    Objects.equals(startDate, position.startDate) &&
                     Objects.equals(endDate, position.endDate) &&
-                    Objects.equals(title, position.title) &&
                     Objects.equals(description, position.description);
         }
 
         @Override
         public int hashCode() {
-            return Objects.hash(startDate, endDate, title, description);
+            return Objects.hash(title, startDate, endDate, description);
         }
 
         @Override

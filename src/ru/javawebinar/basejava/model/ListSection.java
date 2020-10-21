@@ -1,6 +1,7 @@
 package ru.javawebinar.basejava.model;
 
 import java.util.List;
+import java.util.Objects;
 
 public class ListSection extends Section {
     private final List<String> sectionList;
@@ -21,15 +22,13 @@ public class ListSection extends Section {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-
         ListSection that = (ListSection) o;
-
-        return sectionList.equals(that.sectionList);
+        return Objects.equals(sectionList, that.sectionList);
     }
 
     @Override
     public int hashCode() {
-        return sectionList.hashCode();
+        return Objects.hash(sectionList);
     }
 
     @Override
