@@ -44,7 +44,7 @@ public abstract class AbstractArrayStorage extends AbstractStorage<Integer> {
     }
 
     @Override
-    protected List<Resume> listOfResumes() {
+    protected List<Resume> returnResumeList() {
         return Arrays.asList(storage);
     }
 

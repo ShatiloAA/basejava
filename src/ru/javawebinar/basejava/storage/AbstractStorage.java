@@ -14,7 +14,7 @@ public abstract class AbstractStorage<SK> implements Storage {
 
     private static final Logger LOG = Logger.getLogger(AbstractStorage.class.getName());
 
-    protected abstract List<Resume> listOfResumes();
+    protected abstract List<Resume> returnResumeList();
 
     protected abstract SK getSearchKey(String uuid);
 
@@ -58,7 +58,7 @@ public abstract class AbstractStorage<SK> implements Storage {
 
     @Override
     public List<Resume> getAllSorted() {
-        List<Resume> unsortedList = listOfResumes();
+        List<Resume> unsortedList = returnResumeList();
         return unsortedList.stream()
                 .filter(Objects::nonNull)
                 .sorted(Comparator.comparing(Resume::getFullName)

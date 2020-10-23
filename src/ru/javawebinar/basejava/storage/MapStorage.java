@@ -36,7 +36,7 @@ public class MapStorage extends AbstractStorage<String> {
     }
 
     @Override
-    protected List<Resume> listOfResumes() {
+    protected List<Resume> returnResumeList() {
         return new ArrayList<>(storage.values());
     }
 
