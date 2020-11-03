@@ -3,7 +3,10 @@ package ru.javawebinar.basejava.model;
 import java.util.Objects;
 
 public class TextSection extends Section {
-    private final String description;
+    private String description;
+
+    public TextSection() {
+    }
 
     public TextSection(String description) {
         this.description = description;

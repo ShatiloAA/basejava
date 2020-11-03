@@ -66,8 +66,8 @@ public abstract class AbstractStorageTest {
     public void update() throws Exception {
         Resume testResume = fillOutResume(UUID_1, "Arnold Schwarzenegger");
         storage.update(testResume);
-        //Assert.assertSame(testResume, storage.get(UUID_1));
-        Assert.assertEquals(testResume, storage.get(UUID_1));
+        //Assert.assertEquals(testResume, storage.get(UUID_1));
+        Assert.assertTrue(testResume.equals(storage.get(UUID_1)));
     }
 
     @Test(expected = NotExistStorageException.class)
@@ -87,6 +87,7 @@ public abstract class AbstractStorageTest {
         int sizeBeforeSave = storage.size();
         storage.save(TEST_RESUME_4);
         Assert.assertEquals(sizeBeforeSave + 1, storage.size());
+        System.out.println(TEST_RESUME_3.hashCode() + " " + storage.get(UUID_4).hashCode());
         Assert.assertEquals(TEST_RESUME_4, storage.get(UUID_4));
     }
 

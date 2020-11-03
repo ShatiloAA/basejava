@@ -4,6 +4,7 @@ import ru.javawebinar.basejava.exception.StorageException;
 import ru.javawebinar.basejava.model.Resume;
 import ru.javawebinar.basejava.storage.serializer.Serializer;
 
+import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -59,7 +60,7 @@ public class PathStorage extends AbstractStorage<Path> {
     @Override
     protected Resume makeGet(Path path) {
         try {
-            return serializer.makeRead(Files.newInputStream(path));
+            return serializer.makeRead(new BufferedInputStream(Files.newInputStream(path)));
         } catch (IOException e) {
             throw new StorageException("IO error", path.getFileName().toString(), e);
         }

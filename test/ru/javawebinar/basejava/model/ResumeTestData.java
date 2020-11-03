@@ -4,7 +4,6 @@ import ru.javawebinar.basejava.util.DateUtil;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import static java.time.Month.*;
@@ -55,13 +54,13 @@ public class ResumeTestData {
         experienceList.add(new Organization(
                 "Wrike",
                 "wrike.com",
-                        new Organization.Position(
-                "Wrike", DateUtil.of(2016, JANUARY),
-                DateUtil.of(2014, OCTOBER),
-                "Старший разработчик (backend)\n" +
-                        "Проектирование и разработка онлайн платформы управления проектами Wrike " +
-                        "(Java 8 API, Maven, Spring, MyBatis, Guava, Vaadin, PostgreSQL, Redis). " +
-                        "Двухфакторная аутентификация, авторизация по OAuth1, OAuth2, JWT SSO.")));
+                new Organization.Position(
+                        "Wrike", DateUtil.of(2016, JANUARY),
+                        DateUtil.of(2014, OCTOBER),
+                        "Старший разработчик (backend)\n" +
+                                "Проектирование и разработка онлайн платформы управления проектами Wrike " +
+                                "(Java 8 API, Maven, Spring, MyBatis, Guava, Vaadin, PostgreSQL, Redis). " +
+                                "Двухфакторная аутентификация, авторизация по OAuth1, OAuth2, JWT SSO.")));
         resume.setSection(EXPERIENCE, new OrganizationSection(experienceList));
 
         List<Organization> educationList = new ArrayList<>();
