@@ -67,6 +67,7 @@ public abstract class AbstractStorageTest {
         Resume testResume = fillOutResume(UUID_1, "Arnold Schwarzenegger");
         storage.update(testResume);
         //Assert.assertEquals(testResume, storage.get(UUID_1));
+
         Assert.assertTrue(testResume.equals(storage.get(UUID_1)));
     }
 

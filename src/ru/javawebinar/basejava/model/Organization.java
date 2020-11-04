@@ -11,10 +11,11 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
-@XmlAccessorType(XmlAccessType.FIELD)
 
+@XmlAccessorType(XmlAccessType.FIELD)
 public class Organization implements Serializable {
     private static final long serialVersionUID = 1L;
+
     private Link homePage;
     private List<Position> positions = new ArrayList<>();
 
@@ -39,11 +40,6 @@ public class Organization implements Serializable {
     }
 
     @Override
-    public String toString() {
-        return "Organization(" + homePage + "," + positions + ')';
-    }
-
-    @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
@@ -57,14 +53,19 @@ public class Organization implements Serializable {
         return Objects.hash(homePage, positions);
     }
 
-    @XmlAccessorType(XmlAccessType.FIELD)
+    @Override
+    public String toString() {
+        return "Organization(" + homePage + "," + positions + ')';
+    }
 
-    public static class Position implements Serializable {
-        private String title;
+
+    @XmlAccessorType(XmlAccessType.FIELD)
+        public static class Position implements Serializable {
         @XmlJavaTypeAdapter(LocalDateAdapter.class)
         private LocalDate startDate;
         @XmlJavaTypeAdapter(LocalDateAdapter.class)
         private LocalDate endDate;
+        private String title;
         private String description;
 
         public Position() {
@@ -74,9 +75,10 @@ public class Organization implements Serializable {
             Objects.requireNonNull(title, "title must not be null");
             Objects.requireNonNull(startDate, "startDate must not be null");
             Objects.requireNonNull(endDate, "endDate must not be null");
-            this.title = title;
+
             this.startDate = startDate;
             this.endDate = endDate;
+            this.title = title;
             this.description = description;
         }
 
@@ -88,12 +90,12 @@ public class Organization implements Serializable {
             return endDate;
         }
 
-        public void setEndDate(LocalDate endDate) {
-            this.endDate = endDate;
-        }
-
         public String getDescription() {
             return description;
+        }
+
+        public String getTitle() {
+            return title;
         }
 
         @Override

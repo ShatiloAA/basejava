@@ -59,7 +59,7 @@ public class ResumeTestData {
                         DateUtil.of(2014, OCTOBER),
                         "Старший разработчик (backend)\n" +
                                 "Проектирование и разработка онлайн платформы управления проектами Wrike " +
-                                "(Java 8 API, Maven, Spring, MyBatis, Guava, Vaadin, PostgreSQL, Redis). " +
+                                "(Java 8 API, Maven, Spring, MyBatis, Guava, Vaadin, PostgreSQL, Redis)." +
                                 "Двухфакторная аутентификация, авторизация по OAuth1, OAuth2, JWT SSO.")));
         resume.setSection(EXPERIENCE, new OrganizationSection(experienceList));
 
