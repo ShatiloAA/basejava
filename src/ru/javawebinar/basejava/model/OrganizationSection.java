@@ -33,7 +33,7 @@ public class OrganizationSection extends Section {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         OrganizationSection that = (OrganizationSection) o;
-        return organizations.equals(that.organizations);
+        return Objects.equals(organizations, that.organizations);
     }
 
     @Override

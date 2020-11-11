@@ -31,6 +31,11 @@ public class Organization implements Serializable {
         this.positions = positions;
     }
 
+    public Organization(Link homePage) {
+        this.homePage = homePage;
+        this.positions = null;
+    }
+
     public Link getHomepage() {
         return homePage;
     }
@@ -60,12 +65,12 @@ public class Organization implements Serializable {
 
 
     @XmlAccessorType(XmlAccessType.FIELD)
-        public static class Position implements Serializable {
+    public static class Position implements Serializable {
+        private String title;
         @XmlJavaTypeAdapter(LocalDateAdapter.class)
         private LocalDate startDate;
         @XmlJavaTypeAdapter(LocalDateAdapter.class)
         private LocalDate endDate;
-        private String title;
         private String description;
 
         public Position() {
@@ -76,10 +81,14 @@ public class Organization implements Serializable {
             Objects.requireNonNull(startDate, "startDate must not be null");
             Objects.requireNonNull(endDate, "endDate must not be null");
 
+            this.title = title;
             this.startDate = startDate;
             this.endDate = endDate;
-            this.title = title;
             this.description = description;
+        }
+
+        public String getTitle() {
+            return title;
         }
 
         public LocalDate getStartDate() {
@@ -92,10 +101,6 @@ public class Organization implements Serializable {
 
         public String getDescription() {
             return description;
-        }
-
-        public String getTitle() {
-            return title;
         }
 
         @Override
@@ -116,7 +121,7 @@ public class Organization implements Serializable {
 
         @Override
         public String toString() {
-            return "Position(" + startDate + ',' + endDate + ',' + title + ',' + description + ')';
+            return "Position(" + title + ',' + startDate + ',' + endDate + ',' + description + ')';
         }
     }
 }
