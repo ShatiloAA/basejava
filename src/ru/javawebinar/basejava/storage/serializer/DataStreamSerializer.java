@@ -1,58 +1,57 @@
 package ru.javawebinar.basejava.storage.serializer;
 
-import ru.javawebinar.basejava.exception.StorageException;
 import ru.javawebinar.basejava.model.*;
 
 import java.io.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
-import java.util.Map;
-import java.util.function.Consumer;
+import java.util.Objects;
 
 public class DataStreamSerializer implements Serializer {
-
-    //https://www.baeldung.com/java-lambda-exceptions
-    @FunctionalInterface
-    public interface ThrowingConsumer<T, E extends Exception> {
-        void accept(T t) throws E;
-    }
-
-    //wapper for Lambda throwing exceptions
-    private static <T> Consumer<T> throwingConsumerWrapper(ThrowingConsumer<T, Exception> throwingConsumer) {
-
-        return i -> {
-            try {
-                throwingConsumer.accept(i);
-            } catch (Exception e) {
-                throw new StorageException("IO exception", null, e);
-            }
-        };
-    }
 
     @Override
     public void makeWrite(Resume resume, OutputStream os) throws IOException {
         try (DataOutputStream dos = new DataOutputStream(os)) {
             dos.writeUTF(resume.getUuid());
             dos.writeUTF(resume.getFullName());
-            dos.writeInt(resume.getContacts().size());
-            for (Map.Entry<ContactType, String> entry : resume.getContacts().entrySet()) {
+            writeWithException(resume.getContacts().entrySet(), dos, entry -> {
                 dos.writeUTF(entry.getKey().name());
                 dos.writeUTF(entry.getValue());
-            }
+            });
 
-            for (Map.Entry<SectionType, Section> sectionEntry : resume.getSections().entrySet()) {
-                SectionType sectionType = sectionEntry.getKey();
+            writeWithException(resume.getSections().entrySet(), dos, entry -> {
+                SectionType sectionType = entry.getKey();
                 dos.writeUTF(sectionType.name());
-                if (sectionType.equals(SectionType.PERSONAL) || sectionType.equals(SectionType.OBJECTIVE)) {
-                    dos.writeUTF(sectionEntry.getValue().toString());
-                } else if (sectionType.equals(SectionType.ACHIEVEMENT) || sectionType.equals(SectionType.QUALIFICATIONS)) {
-                    writeListSection(dos, ((ListSection) sectionEntry.getValue()).getInfoList());
-                } else if (sectionType.equals(SectionType.EXPERIENCE) || sectionType.equals(SectionType.EDUCATION)) {
-                    writeOrgSection(dos, ((OrganizationSection) sectionEntry.getValue()).getOrganizations());
+                switch (sectionType) {
+                    case PERSONAL:
+                    case OBJECTIVE:
+                        dos.writeUTF(entry.getValue().toString());
+                        break;
+                    case ACHIEVEMENT:
+                    case QUALIFICATIONS:
+                        writeWithException(((ListSection) entry.getValue()).getInfoList(), dos, dos::writeUTF);
+                        break;
+                    case EDUCATION:
+                    case EXPERIENCE:
+                        writeWithException(((OrganizationSection) entry.getValue()).getOrganizations(), dos,
+                                org -> {
+                                    dos.writeUTF(org.getHomepage().getName());
+                                    dos.writeUTF(writeNull(org.getHomepage().getUrl()));
+                                    writeWithException(org.getPositions(), dos,
+                                            position -> {
+                                                dos.writeUTF(position.getTitle());
+                                                dos.writeInt(position.getStartDate().getYear());
+                                                dos.writeInt(position.getStartDate().getMonth().getValue());
+                                                dos.writeInt(position.getEndDate().getYear());
+                                                dos.writeInt(position.getEndDate().getMonth().getValue());
+                                                dos.writeUTF(writeNull(position.getDescription()));
+                                            });
+                                });
+                        break;
                 }
-            }
-
+            });
         }
     }
 
@@ -62,104 +61,94 @@ public class DataStreamSerializer implements Serializer {
             String uuid = dis.readUTF();
             String fullName = dis.readUTF();
             Resume resume = new Resume(uuid, fullName);
-            int size = dis.readInt();
-            for (int i = 0; i < size; i++) {
-                resume.addContact(ContactType.valueOf(dis.readUTF()), dis.readUTF());
-            }
-
-            while (dis.available() > 0) {
+            readWithException(dis, () -> resume.addContact(ContactType.valueOf(dis.readUTF()), dis.readUTF()));
+            readWithException(dis, () -> {
                 SectionType type = SectionType.valueOf(dis.readUTF());
-                if (type.equals(SectionType.PERSONAL) || type.equals(SectionType.OBJECTIVE)) {
-                    resume.addSection(type, new TextSection(dis.readUTF()));
-                } else if (type.equals(SectionType.ACHIEVEMENT) || type.equals(SectionType.QUALIFICATIONS)) {
-                    resume.addSection(type, new ListSection(readListSection(dis)));
-                } else if (type.equals(SectionType.EXPERIENCE) || type.equals(SectionType.EDUCATION)) {
-                    resume.addSection(type, readOrgSection(dis));
+                switch (type) {
+                    case PERSONAL:
+                    case OBJECTIVE:
+                        resume.addSection(type, new TextSection(dis.readUTF()));
+                        break;
+                    case ACHIEVEMENT:
+                    case QUALIFICATIONS:
+                        resume.addSection(type, new ListSection(readListSection(dis, dis::readUTF)));
+                        break;
+                    case EDUCATION:
+                    case EXPERIENCE:
+                        resume.addSection(type, readOrgSection(dis));
+                        break;
                 }
-            }
+            });
             return resume;
         }
     }
 
     private String writeNull(String writeString) {
-        if (writeString == null) {
-            return "null";
-        }
-        return writeString;
+        return Objects.requireNonNullElse(writeString, "null");
     }
 
     private String readNull(String readString) {
-        if (readString.equals("null")) {
-            return null;
-        }
-        return readString;
+        return readString.equals("null") ? null : readString;
     }
 
-    private void writeListSection(DataOutputStream dataOutputStream, List<String> listOfSections) throws IOException {
-        dataOutputStream.writeInt(listOfSections.size());
-        for (String s : listOfSections) {
-            dataOutputStream.writeUTF(s);
-        }
-    }
-
-    private List<String> readListSection(DataInputStream dataInputStream) throws IOException {
-        List<String> listItems = new ArrayList<>();
+    private <T> List<T> readListSection(DataInputStream dataInputStream, CollectionReader<T> collectionReader) throws IOException {
+        List<T> listItems = new ArrayList<>();
         int sizeItems = dataInputStream.readInt();
         for (int i = 0; i < sizeItems; i++) {
-            listItems.add(dataInputStream.readUTF());
+            listItems.add(collectionReader.read());
         }
         return listItems;
     }
 
-    private void writeOrgSection(DataOutputStream dataOutputStream, List<Organization> listOfOrgs) throws IOException {
-        dataOutputStream.writeInt(listOfOrgs.size());
+    private <T> void writeWithException(Collection<T> collection, DataOutputStream dataOutputStream, CollectionWriter<T> collectionWriter) throws IOException {
+        Objects.requireNonNull(collection);
+        dataOutputStream.writeInt(collection.size());
+        for (T item : collection) {
+            collectionWriter.accept(item);
+        }
+    }
 
-        listOfOrgs.forEach(throwingConsumerWrapper(org -> {
-                    dataOutputStream.writeUTF(org.getHomepage().getName());
-                    dataOutputStream.writeUTF(writeNull(org.getHomepage().getUrl()));
-                    dataOutputStream.writeInt(org.getPositions().size());
-
-                    org.getPositions().forEach(throwingConsumerWrapper(position -> {
-                                dataOutputStream.writeUTF(position.getTitle());
-                                dataOutputStream.writeInt(position.getStartDate().getYear());
-                                dataOutputStream.writeInt(position.getStartDate().getMonth().getValue());
-                                dataOutputStream.writeInt(position.getEndDate().getYear());
-                                dataOutputStream.writeInt(position.getEndDate().getMonth().getValue());
-                                dataOutputStream.writeUTF(writeNull(position.getDescription()));
-                            })
-                    );
-                })
-        );
+    private <T> void readWithException(DataInputStream dataInputStream, CollectionManipulator collectionManipulator) throws IOException {
+        int size = dataInputStream.readInt();
+        for (int i = 0; i < size; i++) {
+            collectionManipulator.manipulate();
+        }
     }
 
     private OrganizationSection readOrgSection(DataInputStream dataInputStream) throws IOException {
-        List<Organization> organizations = new ArrayList<>();
-        int organizationsSize = dataInputStream.readInt();
+        return new OrganizationSection(readListSection(dataInputStream,
+                () -> new Organization(
+                        new Link(dataInputStream.readUTF(),readNull(dataInputStream.readUTF())),
+                        readListSection(dataInputStream, () ->
+                                new Organization.Position(
+                                        dataInputStream.readUTF(),
+                                        LocalDate.of(
+                                                dataInputStream.readInt(),
+                                                dataInputStream.readInt(),
+                                                1),
+                                        LocalDate.of(
+                                                dataInputStream.readInt(),
+                                                dataInputStream.readInt(),
+                                                1),
+                                        readNull(dataInputStream.readUTF())))
+                ))
+        );
 
-        for (int i = 0; i < organizationsSize; i++) {
-            String homepage = dataInputStream.readUTF();
-            String url = dataInputStream.readUTF();
-            Link link = new Link(homepage, readNull(url));
-            int sizeOfPositions = dataInputStream.readInt();
-            List<Organization.Position> positions = new ArrayList<>();
-            for (int j = 0; j < sizeOfPositions; j++) {
-                positions.add(new Organization.Position(
-                        dataInputStream.readUTF(),
-                        LocalDate.of(
-                                dataInputStream.readInt(),
-                                dataInputStream.readInt(),
-                                1),
-                        LocalDate.of(
-                                dataInputStream.readInt(),
-                                dataInputStream.readInt(),
-                                1),
-                        readNull(dataInputStream.readUTF())));
-            }
-            organizations.add(new Organization(link, positions));
-        }
-        return new OrganizationSection(organizations);
     }
 
+    @FunctionalInterface
+    public interface CollectionWriter<T> {
+        void accept(T t) throws IOException;
+    }
 
+    @FunctionalInterface
+    public interface CollectionReader<T> {
+        T read() throws IOException;
+    }
+
+    @FunctionalInterface
+    public interface CollectionManipulator {
+        void manipulate() throws IOException;
+    }
 
 }

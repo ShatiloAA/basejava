@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static java.time.Month.*;
+import static ru.javawebinar.basejava.util.DateUtil.NOW;
 import static ru.javawebinar.basejava.model.ContactType.*;
 import static ru.javawebinar.basejava.model.SectionType.*;
 
@@ -21,10 +22,8 @@ public class ResumeTestData {
         resume.addContact(STACKOVERFLOW, "Профиль Stackoverflow");
         resume.addContact(HOMEPAGE, "Домашняя страница");
 
-        resume.addSection(PERSONAL, new TextSection("Ведущий стажировок и корпоративного обучения по Java Web и Enterprise технологиям") {
-        });
-        resume.addSection(OBJECTIVE, new TextSection("Аналитический склад ума, сильная логика, " +
-                "креативность, инициативность. Пурист кода и архитектуры."));
+        resume.addSection(PERSONAL, new TextSection("Ведущий стажировок и корпоративного обучения по Java Web и Enterprise технологиям"));
+        resume.addSection(OBJECTIVE, new TextSection("Аналитический склад ума, сильная логика, креативность, инициативность. Пурист кода и архитектуры."));
 
         List<String> achievementsList = new ArrayList<>();
        /* achievementsList.add("С 2013 года: разработка проектов \"Разработка Web приложения\",\"Java Enterprise\", " +
@@ -32,7 +31,7 @@ public class ResumeTestData {
                 "Удаленное взаимодействие (JMS/AKKA)\". " +
                 "Организация онлайн стажировок и ведение проектов. Более 1000 выпускников.");*/
         achievementsList.add("Реализация двухфакторной аутентификации для онлайн платформы управления проектами Wrike. " +
-                "Интеграция с Twilio, DuoSecurity, Google Authenticator, Jira, Zendesk.");
+                "с Twilio, DuoSecurity, Google Authenticator, Jira, Zendesk.");
         resume.addSection(ACHIEVEMENT, new ListSection(achievementsList));
 
 
@@ -47,9 +46,8 @@ public class ResumeTestData {
                 "javaops.ru",
                 new Organization.Position(
                         "Java Online Projects", DateUtil.of(2013, OCTOBER),
-                        LocalDate.now(),
-                        "Автор проекта.\n" +
-                                "Создание, организация и проведение Java онлайн проектов и стажировок.")));
+                        NOW,
+                        "Автор проекта. Создание, организация и проведение Java онлайн проектов и стажировок.")));
        /* experienceList.add(new Organization(
                 "Wrike",
                 "wrike.com",
@@ -57,9 +55,9 @@ public class ResumeTestData {
                         "Wrike", DateUtil.of(2016, JANUARY),
                         DateUtil.of(2014, OCTOBER),
                         "Старший разработчик (backend)\n" +
-                                "Проектирование и разработка онлайн платформы управления проектами Wrike " +
-                                "(Java 8 API, Maven, Spring, MyBatis, Guava, Vaadin, PostgreSQL, Redis)." +
-                                "Двухфакторная аутентификация, авторизация по OAuth1, OAuth2, JWT SSO.")));*/
+                                "Проектирование и разработка онлайн платформы управления проектами Wrike
+                                (Java 8 API, Maven, Spring, MyBatis, Guava, Vaadin, PostgreSQL, Redis).
+                                Двухфакторная аутентификация, авторизация по OAuth1, OAuth2, JWT SSO.")));*/
         resume.addSection(EXPERIENCE, new OrganizationSection(experienceList));
 
         List<Organization> educationList = new ArrayList<>();
