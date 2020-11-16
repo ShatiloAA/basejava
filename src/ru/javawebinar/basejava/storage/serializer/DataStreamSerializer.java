@@ -42,10 +42,8 @@ public class DataStreamSerializer implements Serializer {
                                     writeWithException(org.getPositions(), dos,
                                             position -> {
                                                 dos.writeUTF(position.getTitle());
-                                                dos.writeInt(position.getStartDate().getYear());
-                                                dos.writeInt(position.getStartDate().getMonth().getValue());
-                                                dos.writeInt(position.getEndDate().getYear());
-                                                dos.writeInt(position.getEndDate().getMonth().getValue());
+                                                writeLocalDate(position.getStartDate(), dos);
+                                                writeLocalDate(position.getEndDate(), dos);
                                                 dos.writeUTF(writeNull(position.getDescription()));
                                             });
                                 });
@@ -84,7 +82,7 @@ public class DataStreamSerializer implements Serializer {
     }
 
     private String writeNull(String writeString) {
-        return Objects.requireNonNullElse(writeString, "null");
+        return writeString.equals(null) ? "null" : writeString;
     }
 
     private String readNull(String readString) {
@@ -108,7 +106,7 @@ public class DataStreamSerializer implements Serializer {
         }
     }
 
-    private <T> void readWithException(DataInputStream dataInputStream, CollectionManipulator collectionManipulator) throws IOException {
+    private void readWithException(DataInputStream dataInputStream, CollectionManipulator collectionManipulator) throws IOException {
         int size = dataInputStream.readInt();
         for (int i = 0; i < size; i++) {
             collectionManipulator.manipulate();
@@ -118,22 +116,29 @@ public class DataStreamSerializer implements Serializer {
     private OrganizationSection readOrgSection(DataInputStream dataInputStream) throws IOException {
         return new OrganizationSection(readListSection(dataInputStream,
                 () -> new Organization(
-                        new Link(dataInputStream.readUTF(),readNull(dataInputStream.readUTF())),
+                        new Link(dataInputStream.readUTF(), readNull(dataInputStream.readUTF())),
                         readListSection(dataInputStream, () ->
                                 new Organization.Position(
                                         dataInputStream.readUTF(),
-                                        LocalDate.of(
-                                                dataInputStream.readInt(),
-                                                dataInputStream.readInt(),
-                                                1),
-                                        LocalDate.of(
-                                                dataInputStream.readInt(),
-                                                dataInputStream.readInt(),
-                                                1),
+                                        readLocalDate(dataInputStream),
+                                        readLocalDate(dataInputStream),
                                         readNull(dataInputStream.readUTF())))
                 ))
         );
 
+    }
+
+    private void writeLocalDate(LocalDate localDate, DataOutputStream dataOutputStream) throws IOException {
+        dataOutputStream.writeInt(localDate.getYear());
+        dataOutputStream.writeInt(localDate.getMonthValue());
+    }
+
+    private LocalDate readLocalDate(DataInputStream dataInputStream) throws IOException {
+        return LocalDate.of(
+                dataInputStream.readInt(),
+                dataInputStream.readInt(),
+                1
+        );
     }
 
     @FunctionalInterface
