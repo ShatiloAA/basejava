@@ -82,7 +82,7 @@ public class DataStreamSerializer implements Serializer {
     }
 
     private String writeNull(String writeString) {
-        return writeString.equals(null) ? "null" : writeString;
+        return writeString == null ? "null" : writeString;
     }
 
     private String readNull(String readString) {
