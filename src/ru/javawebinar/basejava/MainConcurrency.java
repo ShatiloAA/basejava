@@ -1,8 +1,11 @@
 package ru.javawebinar.basejava;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class MainConcurrency {
     public static final int THREADS_NUMBER = 10000;
-    private static final Object LOCK1 = new Object();
+    private static final Object LOCK = new Object();
     private static final Object LOCK2 = new Object();
     private int counter;
 
@@ -10,7 +13,7 @@ public class MainConcurrency {
         System.out.println(Thread.currentThread().getName());
 
         Thread thread0 = new Thread(() -> {
-            synchronized (LOCK1) {
+            synchronized (LOCK) {
                 System.out.println(Thread.currentThread().getName() + ", locked LOCK1");
                 try {
                     Thread.sleep(1000);
@@ -25,25 +28,10 @@ public class MainConcurrency {
 
         });
 
-        Thread thread1 = new Thread(() -> {
-            synchronized (LOCK2) {
-                System.out.println(Thread.currentThread().getName() + ", locked LOCK2");
-                try {
-                    Thread.sleep(1000);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-                synchronized (LOCK1) {
-                    System.out.println(Thread.currentThread().getName() + ", locked LOCK1");
-                }
-            }
-
-        });
-
         thread0.start();
-        thread1.start();
 
-/*        new Thread(() -> System.out.println(Thread.currentThread().getName() + ", "
+
+        new Thread(() -> System.out.println(Thread.currentThread().getName() + ", "
                 + Thread.currentThread().getState())).start();
 
         System.out.println(thread0.getState());
@@ -95,6 +83,6 @@ public class MainConcurrency {
 //                wait();
 //                readFile
 //                ...
-//        }*/
+//        }
     }
 }
