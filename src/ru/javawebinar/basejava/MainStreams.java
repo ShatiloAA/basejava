@@ -30,6 +30,8 @@ public class MainStreams {
         int sum = integers.stream()
                 .mapToInt(Integer::intValue)
                 .sum();
-        return integers.stream().filter(sum % 2 == 0 ? a -> a % 2 != 0 : a -> a % 2 == 0).collect(Collectors.toList());
+        return integers.stream()
+                .filter(sum % 2 == 0 ? a -> a % 2 != 0 : a -> a % 2 == 0)
+                .collect(Collectors.toList());
     }
 }
