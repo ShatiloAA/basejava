@@ -22,8 +22,7 @@ public class MainStreams {
         return stream(values)
                 .distinct()
                 .sorted()
-                .reduce(0,
-                        (x, y) -> x * 10 + y);
+                .reduce(0, (x, y) -> x * 10 + y);
     }
 
     private static List<Integer> oddOrEven(List<Integer> integers) {
