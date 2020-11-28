@@ -2,7 +2,6 @@ package ru.javawebinar.basejava;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 import static java.util.Arrays.stream;
