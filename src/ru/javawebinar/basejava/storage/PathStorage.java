@@ -99,7 +99,7 @@ public class PathStorage extends AbstractStorage<Path> {
         try {
             return Files.list(path);
         } catch (IOException e) {
-            throw new StorageException("path delete error", null);
+            throw new StorageException("path delete error", e);
         }
     }
 }

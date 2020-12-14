@@ -14,7 +14,7 @@ import static ru.javawebinar.basejava.model.SectionType.*;
 public class ResumeTestData {
     public static Resume fillOutResume(String uuid, String fullName) {
         Resume resume = new Resume(uuid, fullName);
-        resume.addContact(TELEPHONE, "+7(921) 855-0482");
+        /*resume.addContact(TELEPHONE, "+7(921) 855-0482");
         resume.addContact(SKYPE, "grigory.kislin");
         resume.addContact(EMAIL, "gkislin@yandex.ru");
         resume.addContact(LINKEDIN, "Профиль LinkedIn");
@@ -26,10 +26,6 @@ public class ResumeTestData {
         resume.addSection(OBJECTIVE, new TextSection("Аналитический склад ума, сильная логика, креативность, инициативность. Пурист кода и архитектуры."));
 
         List<String> achievementsList = new ArrayList<>();
-       /* achievementsList.add("С 2013 года: разработка проектов \"Разработка Web приложения\",\"Java Enterprise\", " +
-                "\"Многомодульный maven. Многопоточность. XML (JAXB/StAX). Веб сервисы (JAX-RS/SOAP). " +
-                "Удаленное взаимодействие (JMS/AKKA)\". " +
-                "Организация онлайн стажировок и ведение проектов. Более 1000 выпускников.");*/
         achievementsList.add("Реализация двухфакторной аутентификации для онлайн платформы управления проектами Wrike. " +
                 "с Twilio, DuoSecurity, Google Authenticator, Jira, Zendesk.");
         resume.addSection(ACHIEVEMENT, new ListSection(achievementsList));
@@ -37,7 +33,6 @@ public class ResumeTestData {
 
         List<String> qualificationsList = new ArrayList<>();
         qualificationsList.add("JEE AS: GlassFish (v2.1, v3), OC4J, JBoss, Tomcat, Jetty, WebLogic, WSO2");
-       /* qualificationsList.add("Version control: Subversion, Git, Mercury, ClearCase, Perforce");*/
         resume.addSection(QUALIFICATIONS, new ListSection(qualificationsList));
 
         List<Organization> experienceList = new ArrayList<>();
@@ -48,16 +43,6 @@ public class ResumeTestData {
                         "Java Online Projects", DateUtil.of(2013, OCTOBER),
                         NOW,
                         "Автор проекта. Создание, организация и проведение Java онлайн проектов и стажировок.")));
-       /* experienceList.add(new Organization(
-                "Wrike",
-                "wrike.com",
-                new Organization.Position(
-                        "Wrike", DateUtil.of(2016, JANUARY),
-                        DateUtil.of(2014, OCTOBER),
-                        "Старший разработчик (backend)\n" +
-                                "Проектирование и разработка онлайн платформы управления проектами Wrike
-                                (Java 8 API, Maven, Spring, MyBatis, Guava, Vaadin, PostgreSQL, Redis).
-                                Двухфакторная аутентификация, авторизация по OAuth1, OAuth2, JWT SSO.")));*/
         resume.addSection(EXPERIENCE, new OrganizationSection(experienceList));
 
         List<Organization> educationList = new ArrayList<>();
@@ -68,15 +53,8 @@ public class ResumeTestData {
                         "Coursera", DateUtil.of(2013, MARCH),
                         DateUtil.of(2013, MAY),
                         "\"Functional Programming Principles in Scala\" by Martin Odersky")));
-        /*educationList.add(new Organization(
-                "Luxoft",
-                "Luxoft.com",
-                new Organization.Position(
-                        "Luxoft", DateUtil.of(2014, FEBRUARY),
-                        DateUtil.of(2014, APRIL),
-                        "Курс \"Объектно-ориентированный анализ ИС. Концептуальное моделирование на UML.\"")));*/
         resume.addSection(EDUCATION, new OrganizationSection(educationList));
-
+*/
         return resume;
     }
 
