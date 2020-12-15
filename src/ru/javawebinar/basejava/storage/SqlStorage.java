@@ -64,7 +64,7 @@ public class SqlStorage implements Storage {
             if (!resultSet.next()) {
                 throw new NotExistStorageException(uuid);
             }
-            return new Resume(resultSet.getString("uuid").trim(), resultSet.getString("full_name"));
+            return new Resume(resultSet.getString("uuid"), resultSet.getString("full_name"));
         });
     }
 
@@ -74,7 +74,7 @@ public class SqlStorage implements Storage {
             List<Resume> allResumes = new ArrayList<>();
             ResultSet resultSet = ps.executeQuery();
             while (resultSet.next()) {
-                Resume resume = new Resume(resultSet.getString("uuid").trim(), resultSet.getString("full_name"));
+                Resume resume = new Resume(resultSet.getString("uuid"), resultSet.getString("full_name"));
                 allResumes.add(resume);
             }
             return allResumes;
