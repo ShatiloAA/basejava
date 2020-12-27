@@ -16,7 +16,6 @@ public class SqlHelper {
         this.connectionFactory = connectionFactory;
     }
 
-
     public <T> T execute(String sqlCommand, SqlExecutor<T> sqlExecutor) {
 
         try (
@@ -25,14 +24,23 @@ public class SqlHelper {
         ) {
             return sqlExecutor.execute(ps);
         } catch (SQLException e) {
-            if (e instanceof PSQLException && e.getSQLState().equals("23505")) {
-                throw new ExistStorageException(null);
-            }
-            throw new StorageException(e);
+            throw ExceptionUtil.convertException(e);
         }
     }
 
-    public interface SqlExecutor<T> {
-        T execute(PreparedStatement ps) throws SQLException;
+    public <T> T transactionalExecute(SqlTransaction<T> executor) {
+        try (Connection connection = connectionFactory.getConnection()) {
+            try {
+                connection.setAutoCommit(false);
+                T res = executor.execute(connection);
+                connection.commit();
+                return res;
+            } catch(SQLException e){
+                connection.rollback();
+                throw ExceptionUtil.convertException(e);
+            }
+        } catch (SQLException e) {
+            throw new StorageException(e);
+        }
     }
 }

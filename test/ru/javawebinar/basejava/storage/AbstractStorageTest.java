@@ -16,6 +16,7 @@ import java.util.UUID;
 
 import static org.junit.Assert.assertEquals;
 import static ru.javawebinar.basejava.model.ResumeTestData.fillOutResume;
+import static ru.javawebinar.basejava.model.ResumeTestData.fillOutUpdate;
 
 public abstract class AbstractStorageTest {
 
@@ -66,7 +67,7 @@ public abstract class AbstractStorageTest {
 
     @Test
     public void update() throws Exception {
-        Resume testResume = fillOutResume(UUID_1, "Arnold Schwarzenegger");
+        Resume testResume = fillOutUpdate(UUID_1, "Arnold Schwarzenegger");
         storage.update(testResume);
         Assert.assertEquals(testResume, storage.get(UUID_1));
     }
