@@ -2,6 +2,7 @@ package ru.javawebinar.basejava.sql;
 
 import org.postgresql.util.PSQLException;
 import ru.javawebinar.basejava.exception.ExistStorageException;
+import ru.javawebinar.basejava.exception.NotExistStorageException;
 import ru.javawebinar.basejava.exception.StorageException;
 
 import java.sql.SQLException;

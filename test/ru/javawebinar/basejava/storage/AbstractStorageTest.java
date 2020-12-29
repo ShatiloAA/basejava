@@ -33,7 +33,7 @@ public abstract class AbstractStorageTest {
     private static final Resume TEST_RESUME_4;
 
     static {
-        TEST_RESUME_1 = fillOutResume(UUID_1, "Celine Dion");
+        TEST_RESUME_1 = new Resume(UUID_1, "Celine Dion");
         TEST_RESUME_2 = fillOutResume(UUID_2, "Astra Rose");
         TEST_RESUME_3 = fillOutResume(UUID_3, "Benny Hill");
         TEST_RESUME_4 = fillOutResume(UUID_4, "John Doe");
