@@ -7,12 +7,11 @@ import ru.javawebinar.basejava.Config;
 import ru.javawebinar.basejava.exception.ExistStorageException;
 import ru.javawebinar.basejava.exception.NotExistStorageException;
 import ru.javawebinar.basejava.model.Resume;
+import ru.javawebinar.basejava.model.Section;
+import ru.javawebinar.basejava.model.SectionType;
 
 import java.io.File;
-import java.util.Arrays;
-import java.util.Comparator;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 import static org.junit.Assert.assertEquals;
 import static ru.javawebinar.basejava.model.ResumeTestData.fillOutResume;
@@ -89,6 +88,13 @@ public abstract class AbstractStorageTest {
         int sizeBeforeSave = storage.size();
         storage.save(TEST_RESUME_4);
         assertEquals(sizeBeforeSave + 1, storage.size());
+        //assertEquals(TEST_RESUME_4.getContacts(), storage.get(UUID_4).getContacts());
+        //assertEquals(TEST_RESUME_4.getSections(), storage.get(UUID_4).getSections());
+        /*for(Map.Entry<SectionType, Section> map : TEST_RESUME_4.getSections().entrySet()) {
+            if(!(map.getValue().equals(storage.get(UUID_4).getSection(map.getKey())))) {
+                System.out.println("пойман за руку, как дешевка! " + map.getKey());
+            }
+        }*/
         assertEquals(TEST_RESUME_4, storage.get(UUID_4));
     }
 
